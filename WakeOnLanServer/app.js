@@ -28,7 +28,10 @@ db.ref('wake-on-lan').on('value', (snapshot) => {
         console.log(`Sending wake-on-lan for: ${computerName}`);
         
         const macAddress = changes[computerName].replaceAll('-', ':');
-        wol.wake(macAddress, function (err, res) { });
+        wol.wake(macAddress, function (err, res) {
+            console.log(`res: ${res}`)
+            console.log(`err: ${err}`)
+        });
 
         // Remove the keys after waking on lan the computers
         db.ref(`wake-on-lan/${computerName}`).remove()
