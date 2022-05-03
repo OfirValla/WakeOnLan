@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  speedtest:
+    build:
+      network: host
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+        - FIREBASE_SERVICE_ACCOUNT=${FIREBASE_SERVICE_ACCOUNT}
+        - FIREBASE_DATABASE_URL=${FIREBASE_DATABASE_URL}
+    network_mode: host

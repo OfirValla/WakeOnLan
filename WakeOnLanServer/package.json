@@ -8,6 +8,7 @@
     "name": ""
   },
   "dependencies": {
-    "firebase-admin": "^10.1.0"
+    "firebase-admin": "^10.1.0",
+    "wol": "^1.0.7"
   }
 }
