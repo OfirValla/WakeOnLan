@@ -1,9 +1,13 @@
 import { initializeApp, cert } from 'firebase-admin/app';
 import { getDatabase } from 'firebase-admin/database';
 import * as wol from 'wol';
-import * as fs from 'fs';
 
-const serviceAccount = JSON.parse(fs.readFileSync(process.env.FIREBASE_SERVICE_ACCOUNT));
+//import * as fs from 'fs';
+// const serviceAccount = JSON.parse(fs.readFileSync(process.env.FIREBASE_SERVICE_ACCOUNT));
+
+const buff = new Buffer(process.env.FIREBASE_SERVICE_ACCOUNT);
+const serviceAccount = buff.toString('utf-8');
+
 const app = initializeApp({
     credential: cert(serviceAccount),
     databaseURL: process.env.FIREBASE_DATABASE_URL
