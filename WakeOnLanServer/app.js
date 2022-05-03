@@ -6,7 +6,7 @@ import * as wol from 'wol';
 // const serviceAccount = JSON.parse(fs.readFileSync(process.env.FIREBASE_SERVICE_ACCOUNT));
 
 const buff = new Buffer(process.env.FIREBASE_SERVICE_ACCOUNT);
-const serviceAccount = buff.toString('utf-8');
+const serviceAccount = JSON.parse(buff.toString('utf-8'));
 
 const app = initializeApp({
     credential: cert(serviceAccount),
