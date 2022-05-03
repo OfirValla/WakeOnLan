@@ -2,6 +2,7 @@ version: "3"
 
 services:
   speedtest:
+    image: "wake-on-lan-server:latest"
     build:
       network: host
       context: .
