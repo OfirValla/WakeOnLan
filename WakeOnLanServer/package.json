@@ -1,0 +1,13 @@
+{
+  "name": "wake-on-lan-server",
+  "version": "0.0.0",
+  "description": "WakeOnLanServer",
+  "main": "app.js",
+  "type": "module",
+  "author": {
+    "name": ""
+  },
+  "dependencies": {
+    "firebase-admin": "^10.1.0"
+  }
+}

@@ -1,0 +1,3 @@
+D:\Projects\WakeOnLan\WakeOnLanServer\obj\Debug\WakeOnLanServer.njsproj.AssemblyReference.cache
+D:\Projects\WakeOnLan\WakeOnLanServer\obj\Debug\WakeOnLanServer.njsproj.CoreCompileInputs.cache
+D:\Projects\WakeOnLan\WakeOnLanServer\bin\Microsoft.NodejsTools.WebRole.dll

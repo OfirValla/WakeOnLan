@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "WakeOnLanServer", "WakeOnLanServer\WakeOnLanServer.njsproj", "{803616EF-C60A-497D-93A2-62A6D4435F46}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{803616EF-C60A-497D-93A2-62A6D4435F46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{803616EF-C60A-497D-93A2-62A6D4435F46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{803616EF-C60A-497D-93A2-62A6D4435F46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{803616EF-C60A-497D-93A2-62A6D4435F46}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FE690F12-6A91-418E-A597-F4C640ED00AD}
+	EndGlobalSection
+EndGlobal
