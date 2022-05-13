@@ -60,8 +60,6 @@ schedule.scheduleJob('0 * * * * *', async (fireDate) => {
             timeout: 10,
             extra: isWindows ? ['-n', '1'] : ['-c', '1'],
         });
-        console.log(res, res.alive)
-
         console.log(`${host}: ${res.alive}`);
         db.ref(`computers/${host}/isOnline`).set(res.alive);
     }
