@@ -1,6 +1,8 @@
 import { initializeApp, cert } from 'firebase-admin/app';
 import { getDatabase } from 'firebase-admin/database';
+import schedule from 'node-schedule';
 import * as wol from 'wol';
+import ping from 'ping';
 
 const serviceAccount = {
     "type": "service_account",
@@ -35,5 +37,32 @@ db.ref('wake-on-lan').on('value', (snapshot) => {
 
         // Remove the keys after waking on lan the computers
         db.ref(`wake-on-lan/${computerName}`).remove()
+    }
+});
+
+// Update the hosts lists
+const hosts = [];
+db.ref('computers').on('value', (snapshot) => {
+    const changes = snapshot.val();
+    for (const computerName of Object.keys(changes)) {
+        if (hosts.includes(computerName)) continue;
+
+        hosts.push(computerName);
+    }
+});
+
+// Check the status of the computers at the start of each minute
+const isWindows = process.platform === "win32";
+schedule.scheduleJob('0 * * * * *', async (fireDate) => {
+    console.log(fireDate);
+    for (const host of hosts) {
+        let res = await ping.promise.probe(host, {
+            timeout: 10,
+            extra: isWindows ? ['-n', '1'] : ['-c', '1'],
+        });
+        console.log(res, res.alive)
+
+        console.log(`${host}: ${res.alive}`);
+        db.ref(`computers/${host}/isOnline`).set(res.alive);
     }
 });

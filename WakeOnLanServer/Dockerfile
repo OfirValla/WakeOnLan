@@ -5,6 +5,7 @@ WORKDIR /app
 RUN dpkg-reconfigure -f noninteractive git
 RUN git clone https://github.com/OfirValla/WakeOnLan.git
 WORKDIR /app/WakeOnLan
+RUN git reset --hard origin/main
 RUN git pull
 
 # Install app dependencies

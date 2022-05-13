@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "firebase-admin": "^10.1.0",
+    "node-schedule": "^2.1.0",
+    "ping": "^0.4.2",
     "wol": "^1.0.7"
   }
 }
