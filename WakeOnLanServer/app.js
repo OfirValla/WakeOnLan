@@ -22,33 +22,25 @@ const app = initializeApp({
 });
 
 const db = getDatabase(app);
-db.ref('wake-on-lan').on('value', (snapshot) => {
-    const changes = snapshot.val();
-    if (!changes) return;
+db.ref('wake-on-lan').on('child_added', (snapshot) => {
+    const computerName = snapshot.key;
+    const macAddress = snapshot.val().replaceAll('-', ':');
 
-    for (const computerName of Object.keys(changes)) {
-        const macAddress = changes[computerName].replaceAll('-', ':');
-        console.log(`Sending wake-on-lan: ${computerName} - ${macAddress}`);
-        
-        wol.wake(macAddress, (err, res) => {
-            console.log(`res: ${JSON.stringify(res)}`)
-            console.log(`err: ${JSON.stringify(err)}`)
-        });
+    console.log(`Sending wake-on-lan: ${computerName} - ${macAddress}`);
+    wol.wake(macAddress, (err, res) => { });
 
-        // Remove the keys after waking on lan the computers
-        db.ref(`wake-on-lan/${computerName}`).remove()
-    }
+    // Remove the keys after waking on lan the computers
+    db.ref(`wake-on-lan/${computerName}`).remove()
 });
 
 // Update the hosts lists
-const hosts = [];
-db.ref('computers').on('value', (snapshot) => {
-    const changes = snapshot.val();
-    for (const computerName of Object.keys(changes)) {
-        if (hosts.includes(computerName)) continue;
-
-        hosts.push(computerName);
-    }
+var hosts = [];
+db.ref('computers').on('child_added', (snapshot) => {
+    hosts.push(snapshot.key);
+});
+db.ref('computers').on('child_removed', (snapshot) => {
+    const index = hosts.indexOf(snapshot.key);
+    if (index > -1) hosts.splice(index, 1);
 });
 
 // Check the status of the computers at the start of each minute
@@ -60,7 +52,15 @@ schedule.scheduleJob('0 * * * * *', async (fireDate) => {
             timeout: 10,
             extra: isWindows ? ['-n', '1'] : ['-c', '1'],
         });
+        
+        const snap = await db.ref(`computers/${host}`).once('value')
+        if (snap.numChildren() === 0) return;
+
         console.log(`${host}: ${res.alive}`);
         db.ref(`computers/${host}/isOnline`).set(res.alive);
+        if (res.alive)
+            db.ref(`computers/${host}/ip`).set(res.numeric_host);
+        else
+            db.ref(`computers/${host}/ip`).remove();
     }
 });
