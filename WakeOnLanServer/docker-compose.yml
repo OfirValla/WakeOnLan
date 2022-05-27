@@ -15,4 +15,5 @@ services:
       - CLIENT_EMAIL=${CLIENT_EMAIL}
       - CLIENT_ID=${CLIENT_ID}
       - CLIENT_X509_CERT_URL=${CLIENT_X509_CERT_URL}
+      - DISCORD_WEBHOOK=${DISCORD_WEBHOOK}
     network_mode: host
