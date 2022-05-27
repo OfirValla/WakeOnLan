@@ -6,9 +6,8 @@ LABEL com.centurylinklabs.watchtower.enable="false"
 WORKDIR /app
 RUN dpkg-reconfigure -f noninteractive git
 RUN git clone https://github.com/OfirValla/WakeOnLan.git
-RUN git reset --hard origin/main
-RUN git pull
 WORKDIR /app/WakeOnLan
+RUN git pull
 
 # Install app dependencies
 WORKDIR /app/WakeOnLan/WakeOnLanServer
