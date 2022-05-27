@@ -8,7 +8,8 @@
     "name": ""
   },
   "dependencies": {
-    "firebase-admin": "^10.1.0",
+    "discord-webhook-node": "^1.1.8",
+    "firebase-admin": "^10.2.0",
     "node-schedule": "^2.1.0",
     "ping": "^0.4.2",
     "wol": "^1.0.7"

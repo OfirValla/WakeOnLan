@@ -1,6 +1,6 @@
-import { initializeApp, cert } from 'firebase-admin/app';
-import { getDatabase } from 'firebase-admin/database';
+import { Webhook, MessageBuilder } from 'discord-webhook-node';
 import schedule from 'node-schedule';
+import admin from 'firebase-admin';
 import * as wol from 'wol';
 import ping from 'ping';
 
@@ -21,7 +21,7 @@ const app = initializeApp({
     databaseURL: process.env.FIREBASE_DATABASE_URL
 });
 
-const db = getDatabase(app);
+const db = app.database();
 db.ref('wake-on-lan').on('child_added', (snapshot) => {
     const computerName = snapshot.key;
     const macAddress = snapshot.val().replaceAll('-', ':');
@@ -34,7 +34,7 @@ db.ref('wake-on-lan').on('child_added', (snapshot) => {
 });
 
 // Update the hosts lists
-var hosts = [];
+const hosts = [];
 db.ref('computers').on('child_added', (snapshot) => {
     hosts.push(snapshot.key);
 });
@@ -46,7 +46,6 @@ db.ref('computers').on('child_removed', (snapshot) => {
 // Check the status of the computers at the start of each minute
 const isWindows = process.platform === "win32";
 schedule.scheduleJob('0 * * * * *', async (fireDate) => {
-    console.log(fireDate);
     for (const host of hosts) {
         let res = await ping.promise.probe(host, {
             timeout: 10,
@@ -61,5 +60,17 @@ schedule.scheduleJob('0 * * * * *', async (fireDate) => {
 
         const ref = db.ref(`computers/${host}/ip`);
         res.alive ? ref.set(res.numeric_host) : ref.remove();
+
+        if (process.env.DISCORD_WEBHOOK && res.alive != snap.val().isOnline) {
+            const hook = new Webhook(process.env.DISCORD_WEBHOOK);
+            const embed = new MessageBuilder()
+                .setTitle(`${host} - Computer Status`)
+                .setColor(res.alive ? '#00ff00' : '#ff0000')
+                .addField('Status', res.alive ? 'Online' : 'Offline' , true)
+                .addField('IP Address', res.alive ? res.numeric_host : 'N/A', true)
+                .setTimestamp();
+
+            hook.send(embed);
+        }        
     }
 });
