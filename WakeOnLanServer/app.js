@@ -58,9 +58,8 @@ schedule.scheduleJob('0 * * * * *', async (fireDate) => {
 
         console.log(`${host}: ${res.alive}`);
         db.ref(`computers/${host}/isOnline`).set(res.alive);
-        if (res.alive)
-            db.ref(`computers/${host}/ip`).set(res.numeric_host);
-        else
-            db.ref(`computers/${host}/ip`).remove();
+
+        const ref = db.ref(`computers/${host}/ip`);
+        res.alive ? ref.set(res.numeric_host) : ref.remove();
     }
 });
