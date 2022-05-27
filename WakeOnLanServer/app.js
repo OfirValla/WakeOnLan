@@ -16,8 +16,8 @@ const serviceAccount = {
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
     "client_x509_cert_url": process.env.CLIENT_X509_CERT_URL
 }
-const app = initializeApp({
-    credential: cert(serviceAccount),
+const app = admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
     databaseURL: process.env.FIREBASE_DATABASE_URL
 });
 
